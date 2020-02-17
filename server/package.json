@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"tsc -w \" \"nodemon ./dist/index.js\""
+  },
+  "keywords": [],
+  "author": "AndresLuna17",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/morgan": "^1.7.37",
+    "concurrently": "^5.1.0",
+    "mysql2": "^2.1.0",
+    "nodemon": "^2.0.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1"
+  }
+}
