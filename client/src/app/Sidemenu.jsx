@@ -114,7 +114,7 @@ export default class Sidemenu extends Component {
             }}
           >
             <Link to="/" className="site_title">
-              <i className="fa fa-paw" />
+              <i className="fa fa-calendar" />
               <span>Novedades Admin</span>
             </Link>
           </div>

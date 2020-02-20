@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { AnalistasModule } from "./modules/analistas/init";
 import { NovedadesModule } from "./modules/novedades/init";
+import { FormulariosModule } from "./modules/formularios/init";
 
 export class App {
   app: Express;
@@ -34,6 +35,7 @@ export class App {
   private initmodules(){
     new AnalistasModule(this.app);
     new NovedadesModule(this.app);
+    new FormulariosModule(this.app)
   }
 }
 

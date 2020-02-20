@@ -35,30 +35,44 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var mysql2 = require('mysql2/promise');
-var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-function connect() {
-    return __awaiter(this, void 0, void 0, function () {
-        var connection;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, mysql2.createPool({
-                        host: process.env.DATABASE_HOST,
-                        user: process.env.DATABASE_USER,
-                        password: process.env.DATABASE_PASS,
-                        database: process.env.DATABASE_NAME,
-                        connectionLimit: 1
-                    })];
-                case 1:
-                    connection = _a.sent();
-                    return [2 /*return*/, connection];
-            }
+var novedades_repository_1 = require("../repositories/novedades.repository");
+var NovedadesBusinessController = /** @class */ (function () {
+    function NovedadesBusinessController(novedadRepository) {
+        if (novedadRepository === void 0) { novedadRepository = new novedades_repository_1.NovedadesRepository(); }
+        this.novedadRepository = novedadRepository;
+    }
+    NovedadesBusinessController.prototype.createNewUser = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.novedadRepository.addNewNovedad(user)];
+            });
         });
-    });
-}
-exports.connect = connect;
+    };
+    //public async getUserById(userid: string): Promise<Analista> {
+    //    return this.userRepository.getUserById(userid);
+    //}
+    NovedadesBusinessController.prototype.getUserId = function (userid) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.novedadRepository.getUserId(userid)];
+            });
+        });
+    };
+    NovedadesBusinessController.prototype.getUserAll = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.novedadRepository.getUserAll()];
+            });
+        });
+    };
+    NovedadesBusinessController.prototype.updateUser = function (id, analista) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.novedadRepository.updateUserr(id, analista)];
+            });
+        });
+    };
+    return NovedadesBusinessController;
+}());
+exports.NovedadesBusinessController = NovedadesBusinessController;

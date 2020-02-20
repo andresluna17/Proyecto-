@@ -35,30 +35,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var mysql2 = require('mysql2/promise');
-var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-function connect() {
-    return __awaiter(this, void 0, void 0, function () {
-        var connection;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, mysql2.createPool({
-                        host: process.env.DATABASE_HOST,
-                        user: process.env.DATABASE_USER,
-                        password: process.env.DATABASE_PASS,
-                        database: process.env.DATABASE_NAME,
-                        connectionLimit: 1
-                    })];
-                case 1:
-                    connection = _a.sent();
-                    return [2 /*return*/, connection];
-            }
-        });
-    });
-}
-exports.connect = connect;
+var formularios_businessController_1 = require("../businessControllers/formularios.businessController");
+var formulariosRouteController = /** @class */ (function () {
+    function formulariosRouteController(formularioBusinessController) {
+        var _this = this;
+        if (formularioBusinessController === void 0) { formularioBusinessController = new formularios_businessController_1.formulariosBusinessController(); }
+        this.getanalistas = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var analistas, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.formularioBusinessController.getanalistas()];
+                    case 1:
+                        analistas = _a.sent();
+                        return [2 /*return*/, res.status(200).json(analistas)];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.log("Error creating new user", error_1);
+                        return [2 /*return*/, res
+                                .status(400)
+                                .send({ message: "error : " + error_1 })];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.formularioBusinessController = formularioBusinessController;
+    }
+    return formulariosRouteController;
+}());
+exports.formulariosRouteController = formulariosRouteController;

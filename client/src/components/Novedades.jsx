@@ -1,72 +1,268 @@
 import React from "react";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import axios from "axios";
-import {InputText} from 'primereact/inputtext';
-import moments from "../plugins/moments"
+import { Card } from "primereact/card";
+import { Button } from "primereact/button";
+import moments from "../plugins/moments";
+import { ScrollPanel } from "primereact/scrollpanel";
+import { Dialog } from "primereact/dialog";
+import { Dropdown } from "primereact/dropdown";
+import { Calendar } from "primereact/calendar";
 
 export default class Novedades extends React.Component {
-    constructor() {
-        super();
-        this.state = {};
-        this.getAllNovedades();
+  state;
+  constructor() {
+    super();
+    this.state = {
+      novedades: [],
+      visible: false,
+      novedad: {
+        analista: null
       }
+    };
+    this.getAllNovedades();
+    this.onClick = this.onClick.bind(this);
+    this.onHide = this.onHide.bind(this);
+  }
 
+  componentDidMount() {
+    this.formularioanalistas();
+  }
 
-    async getAllNovedades() {
-        let res = await axios({
-          method: "get",
-          url: "http://localhost:5000/novedad"
-        });
-        let data = res.data;
-        this.setState({ Novedades: data });
-        return console.log(data);
-      }
+  async formularioanalistas() {
+    let res = await axios({
+      method: "get",
+      url: "http://localhost:5000/formularios"
+    });
+    let analista = res.data[0];
+    let estados = res.data[1];
+    let tipo = res.data[2];
+    this.setState({
+      analistas: analista,
+      tipo: tipo,
+      estados: estados,
+      estado: []
+    });
+    return console.log(res.data);
+  }
 
-      convertiondate(rowData) {
-        return <p>{moments(rowData.fecha_inicial).format("MMMM Do YYYY, h:mm A")}</p>;
+  async getAllNovedades() {
+    let res = await axios({
+      method: "get",
+      url: "http://localhost:5000/novedad"
+    });
+    let data = res.data;
+    this.setState({ novedades: data });
+    return console.log(data);
+  }
+
+  changeHandler = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    if (name === "tipo_novedad") {
+      var estado = this.state.estados.filter(
+        ({ tipo_novedada }) => tipo_novedada === value
+      );
+      this.setState({ estado: estado });
+    }
+    this.setState({
+      novedad: {
+        ...this.state.novedad,
+        [name]: value
       }
-      convertiondate2(rowData) {
-        return <p>{moments(rowData.feche_termina).format("MMMM Do YYYY, h:mm A")}</p>;
-      }
+    });
+  };
+
+  onClick() {
+    this.setState({ visible: true });
+  }
+
+  onHide() {
+    this.setState({ visible: false });
+  }
+
+  submit = async (e) => {
+    e.preventDefault();
+    console.log(this.state.novedad);
+    let res = await axios({
+      method: "post",
+      url: "http://localhost:5000/novedad",
+      data: this.state.novedad
+    });
+    let data = res.data;
+    return console.log(data);
+  };
 
   render() {
-    var header = (
-        <div style={{ textAlign: "left" }}>
-          <i className="pi pi-search" style={{ margin: "4px 4px 0 0" }}></i>
-          <InputText
-            type="search"
-            onInput={e => this.setState({ globalFilter: e.target.value })}
-            placeholder="Global Search"
-            size="50"
-          />
-        </div>
-      );
+    const es = {
+      firstDayOfWeek: 1,
+      dayNames: [
+        "domingo",
+        "lunes",
+        "martes",
+        "miércoles",
+        "jueves",
+        "viernes",
+        "sábado"
+      ],
+      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+      monthNames: [
+        "enero",
+        "febrero",
+        "marzo",
+        "abril",
+        "mayo",
+        "junio",
+        "julio",
+        "agosto",
+        "septiembre",
+        "octubre",
+        "noviembre",
+        "diciembre"
+      ],
+      monthNamesShort: [
+        "ene",
+        "feb",
+        "mar",
+        "abr",
+        "may",
+        "jun",
+        "jul",
+        "ago",
+        "sep",
+        "oct",
+        "nov",
+        "dic"
+      ]
+    };
+
+    const footercard = (
+      <span>
+        <Button label="Save" icon="pi pi-check" />
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          className="p-button-secondary"
+        />
+      </span>
+    );
+
+    const footerform = (
+      <div>
+        <Button label="Yes" icon="pi pi-check" onClick={this.onHide} />
+        <Button
+          label="No"
+          icon="pi pi-times"
+          onClick={this.onHide}
+          className="p-button-secondary"
+          type="submit"
+        />
+      </div>
+    );
     return (
       <div>
-        <div>
-          <div className="right_col" role="main">
-            <div className="content-section implementation">
-              <div className="col-md-12">
-              <DataTable
-                value={this.state.Novedades}
-                ref={el => {
-                  this.dt = el;
-                }}
-                header={header}
-                paginator={true}
-                rows={10}
-                globalFilter={this.state.globalFilter}
-              >
-                <Column field="id" header="id" />
-                <Column field="analista" header="analista" />
-                <Column field="tipo_novedad" header="tipo novedad" />
-                <Column field="estado_novedad" header="estado novedad" />
-                <Column field="tiempo" header=" tiempo" />
-                <Column field="fecha_inicial"  body={this.convertiondate}  header="fecha inicial" />
-                <Column field="feche_termina"  body={this.convertiondate2}  header="feche termina" />
-              </DataTable>
+        <div className="right_col" role="main">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="content-section implementation">
+                <form onSubmit={this.submit}>
+                  <Dialog
+                    header="Nueva Novedad"
+                    visible={this.state.visible}
+                    style={{ width: "30vw" }}
+                    footer={footerform}
+                    onHide={this.onHide}
+                  >
+                    <div style={{ display: "inline-block" }}>
+                      <Dropdown
+                        value={this.state.novedad.analista}
+                        options={this.state.analistas}
+                        onChange={this.changeHandler}
+                        name="analista"
+                        style={{ width: "20vw", margin: " 5px 50px" }}
+                        filter={true}
+                        filterPlaceholder="busque el analista"
+                        filterBy="label,value"
+                        showClear={true}
+                        placeholder="seleccione el analista"
+                      />
+                      <Dropdown
+                        value={this.state.novedad.tipo_novedad}
+                        options={this.state.tipo}
+                        onChange={this.changeHandler}
+                        name="tipo_novedad"
+                        style={{ width: "20vw", margin: " 5px 50px" }}
+                        filterBy="label,value"
+                        placeholder="seleccione el tipo de novedad"
+                        showClear={true}
+                      />
+                      <Dropdown
+                        value={this.state.novedad.estado_novedad}
+                        options={this.state.estado}
+                        onChange={this.changeHandler}
+                        name="estado_novedad"
+                        style={{ width: "20vw", margin: " 5px 50px" }}
+                        filterBy="label,value"
+                        placeholder="seleccione el estado de novedad"
+                        showClear={true}
+                      />
+                      <Calendar
+                        style={{ width: "20vw", margin: " 5px 50px" }}
+                        value={this.state.novedad.fecha_inicial}
+                        name="fecha_inicial"
+                        onChange={this.changeHandler}
+                        disabledDays={[0,6]}
+                        locale={es}
+                        selectionMode="multiple"
+                        showIcon={true}
+                      />
+                    </div>
+                  </Dialog>
+                </form>
+                <Button
+                  label="Nueva novedad"
+                  icon="pi pi-plus"
+                  onClick={this.onClick}
+                />
+                <dir></dir>
               </div>
+              {this.state.novedades.map(e => {
+                return (
+                  <Card
+                    title={e.analista}
+                    subTitle={e.feche_termina?
+                      moments(e.fecha_inicial).format("Do MMMM-YY") +
+                      " hasta " +
+                      moments(e.feche_termina).format("Do MMMM-YY"):moments(e.fecha_inicial).format("Do MMMM-YY")
+                    }
+                    style={{
+                      width: "300px",
+                      display: "inline-block",
+                      margin: "5px"
+                    }}
+                    className="ui-card-shadow"
+                    footer={footercard}
+                    key={e.id}
+                  >
+                    <ScrollPanel style={{ width: "100%", height: "150px" }}>
+                      <h5>
+                        <b>Observación</b>
+                      </h5>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: e.observacion }}
+                      ></div>
+                      <h5>
+                        <b>Tipo De Novedad</b>
+                      </h5>
+                      <p>{e.tipo_novedad}</p>
+                      <h5>
+                        <b>estado</b>
+                      </h5>
+                      <p>{e.estado_novedad}</p>
+                    </ScrollPanel>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </div>

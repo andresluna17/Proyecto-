@@ -4,7 +4,7 @@ import { connect } from "../../../database";
 export class NovedadesRepository {
   // private userDatabase: {[key: string]: User} = {};
 
-  public async addNewNovedad(novedad: Novedad) {
+  public async addNewNovedad(novedad: Novedad):Promise<Novedad> {
     // this.userDatabase[user.userid] = user;
 
     const conn = await connect();
@@ -29,11 +29,24 @@ export class NovedadesRepository {
     const res = await conn.query("SELECT * FROM  novedades");
     for (let index = 0; index < res[0].length; index++) {
       const analista = res[0][index]["analista"];
+      const tipo_novedad = res[0][index]["tipo_novedad"];
+      const estado_novedad = res[0][index]["estado_novedad"];
       const getanalista = await conn.query(
         "SELECT * FROM  analistas WHERE id= ?",
         analista
       );
-      res[0][index]["analista"] = getanalista[0][0]["nombres"]+" "+getanalista[0][0]["apellidos"];
+      const gettipo = await conn.query(
+        "SELECT * FROM  tipos_Novedades WHERE id= ?",
+        tipo_novedad
+      );
+      const getestado = await conn.query(
+        "SELECT * FROM  estados_novedad WHERE id= ?",
+        tipo_novedad
+      );
+      res[0][index]["analista"] =
+        getanalista[0][0]["nombres"] + " " + getanalista[0][0]["apellidos"];
+      res[0][index]["tipo_novedad"] = gettipo[0][0]["nombre"];
+      res[0][index]["estado_novedad"] = getestado[0][0]["nombre"];
     }
     return res[0];
   }
@@ -44,4 +57,4 @@ export class NovedadesRepository {
     const res = await conn.query("SELECT * FROM  novedades WHERE id = ?", id);
     return res[0][0];
   }
-} 
+}

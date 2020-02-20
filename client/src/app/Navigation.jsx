@@ -52,7 +52,7 @@ export default class Navigation extends Component {
                                         aria-labelledby="navbarDropdown1">
                                         <li className="nav-item">
                                             <p className="dropdown-item">
-                                                <span className="image"><img src="images/img.jpg" alt="Profile Image"/></span>
+                                                <span className="image"></span>
                                                 <span>
                                                     <span>John Smith</span>
                                                     <span className="time">3 mins ago</span>
@@ -64,7 +64,7 @@ export default class Navigation extends Component {
                                         </li>
                                         <li className="nav-item">
                                             <p className="dropdown-item">
-                                                <span className="image"><img src="images/img.jpg" alt="Profile Image"/></span>
+                                                <span className="image"></span>
                                                 <span>
                                                     <span>John Smith</span>
                                                     <span className="time">3 mins ago</span>
@@ -76,7 +76,7 @@ export default class Navigation extends Component {
                                         </li>
                                         <li className="nav-item">
                                             <p className="dropdown-item">
-                                                <span className="image"><img src="images/img.jpg" alt="Profile Image"/></span>
+                                                <span className="image"></span>
                                                 <span>
                                                     <span>John Smith</span>
                                                     <span className="time">3 mins ago</span>
@@ -88,7 +88,7 @@ export default class Navigation extends Component {
                                         </li>
                                         <li className="nav-item">
                                             <p className="dropdown-item">
-                                                <span className="image"><img src="images/img.jpg" alt="Profile Image"/></span>
+                                                <span className="image"></span>
                                                 <span>
                                                     <span>John Smith</span>
                                                     <span className="time">3 mins ago</span>

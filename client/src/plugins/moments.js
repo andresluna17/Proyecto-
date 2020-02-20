@@ -10,4 +10,5 @@ function moments(){
       });
     return moment;
 }
+
 export default moments();

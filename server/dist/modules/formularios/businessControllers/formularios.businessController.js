@@ -35,30 +35,38 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var mysql2 = require('mysql2/promise');
-var dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-function connect() {
-    return __awaiter(this, void 0, void 0, function () {
-        var connection;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, mysql2.createPool({
-                        host: process.env.DATABASE_HOST,
-                        user: process.env.DATABASE_USER,
-                        password: process.env.DATABASE_PASS,
-                        database: process.env.DATABASE_NAME,
-                        connectionLimit: 1
-                    })];
-                case 1:
-                    connection = _a.sent();
-                    return [2 /*return*/, connection];
-            }
+var formularios_repository_1 = require("../repositories/formularios.repository");
+var formulariosBusinessController = /** @class */ (function () {
+    function formulariosBusinessController(formularioRepository) {
+        if (formularioRepository === void 0) { formularioRepository = new formularios_repository_1.formulariosRepository(); }
+        this.formularioRepository = formularioRepository;
+    }
+    formulariosBusinessController.prototype.getanalistas = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var res, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.formularioRepository.getanalistas()];
+                    case 1:
+                        _a = [
+                            _b.sent()
+                        ];
+                        return [4 /*yield*/, this.formularioRepository.getEstadoNovedad()];
+                    case 2:
+                        _a = _a.concat([
+                            _b.sent()
+                        ]);
+                        return [4 /*yield*/, this.formularioRepository.getTipoNovedad()];
+                    case 3:
+                        res = _a.concat([
+                            _b.sent()
+                        ]);
+                        return [2 /*return*/, res];
+                }
+            });
         });
-    });
-}
-exports.connect = connect;
+    };
+    return formulariosBusinessController;
+}());
+exports.formulariosBusinessController = formulariosBusinessController;

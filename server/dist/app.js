@@ -44,6 +44,7 @@ var morgan_1 = __importDefault(require("morgan"));
 var cors_1 = __importDefault(require("cors"));
 var init_1 = require("./modules/analistas/init");
 var init_2 = require("./modules/novedades/init");
+var init_3 = require("./modules/formularios/init");
 var App = /** @class */ (function () {
     function App(port) {
         this.port = port;
@@ -78,6 +79,7 @@ var App = /** @class */ (function () {
     App.prototype.initmodules = function () {
         new init_1.AnalistasModule(this.app);
         new init_2.NovedadesModule(this.app);
+        new init_3.FormulariosModule(this.app);
     };
     return App;
 }());

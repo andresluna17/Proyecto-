@@ -8,7 +8,7 @@ export async function connect() {
         user: process.env.DATABASE_USER,
         password:process.env.DATABASE_PASS,
         database: process.env.DATABASE_NAME,
-        connectionLimit: 10
+        connectionLimit: 1
     });
     return connection;
 }

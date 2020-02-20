@@ -37,104 +37,83 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var database_1 = require("../../../database");
-var NovedadesRepository = /** @class */ (function () {
-    function NovedadesRepository() {
+var formulariosRepository = /** @class */ (function () {
+    function formulariosRepository() {
     }
     // private userDatabase: {[key: string]: User} = {};
-    NovedadesRepository.prototype.addNewNovedad = function (novedad) {
+    formulariosRepository.prototype.getanalistas = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, res;
+            var conn, analistas, res, index, analista;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1.connect()];
                     case 1:
                         conn = _a.sent();
-                        return [4 /*yield*/, conn.query("INSERT INTO novedades SET ?", [novedad])];
+                        return [4 /*yield*/, conn.query("SELECT * FROM  analistas")];
                     case 2:
-                        _a.sent();
-                        return [4 /*yield*/, conn.query("SELECT * FROM  novedades WHERE id = LAST_INSERT_ID();")];
-                    case 3:
-                        res = _a.sent();
-                        return [2 /*return*/, res[0][0]];
+                        analistas = _a.sent();
+                        res = [];
+                        for (index = 0; index < analistas[0].length; index++) {
+                            analista = {
+                                label: analistas[0][index]["nombres"] + " " + analistas[0][index]["apellidos"],
+                                value: analistas[0][index]["id"]
+                            };
+                            res.push(analista);
+                        }
+                        return [2 /*return*/, res];
                 }
             });
         });
     };
-    NovedadesRepository.prototype.getUserId = function (userId) {
+    formulariosRepository.prototype.getTipoNovedad = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, res;
+            var conn, tipos, res, index, tipo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1.connect()];
                     case 1:
                         conn = _a.sent();
-                        return [4 /*yield*/, conn.query("SELECT * FROM  novedades WHERE id = ?", userId)];
+                        return [4 /*yield*/, conn.query("SELECT * FROM  tipos_Novedades")];
                     case 2:
-                        res = _a.sent();
-                        return [2 /*return*/, res[0][0]];
+                        tipos = _a.sent();
+                        res = [];
+                        for (index = 0; index < tipos[0].length; index++) {
+                            tipo = {
+                                label: tipos[0][index]["nombre"],
+                                value: tipos[0][index]["id"]
+                            };
+                            res.push(tipo);
+                        }
+                        return [2 /*return*/, res];
                 }
             });
         });
     };
-    NovedadesRepository.prototype.getUserAll = function () {
+    formulariosRepository.prototype.getEstadoNovedad = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, res, index, analista, tipo_novedad, estado_novedad, getanalista, gettipo, getestado;
+            var conn, estados, res, index, estado;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1.connect()];
                     case 1:
                         conn = _a.sent();
-                        return [4 /*yield*/, conn.query("SELECT * FROM  novedades")];
+                        return [4 /*yield*/, conn.query("SELECT * FROM  estados_novedad")];
                     case 2:
-                        res = _a.sent();
-                        index = 0;
-                        _a.label = 3;
-                    case 3:
-                        if (!(index < res[0].length)) return [3 /*break*/, 8];
-                        analista = res[0][index]["analista"];
-                        tipo_novedad = res[0][index]["tipo_novedad"];
-                        estado_novedad = res[0][index]["estado_novedad"];
-                        return [4 /*yield*/, conn.query("SELECT * FROM  analistas WHERE id= ?", analista)];
-                    case 4:
-                        getanalista = _a.sent();
-                        return [4 /*yield*/, conn.query("SELECT * FROM  tipos_Novedades WHERE id= ?", tipo_novedad)];
-                    case 5:
-                        gettipo = _a.sent();
-                        return [4 /*yield*/, conn.query("SELECT * FROM  estados_novedad WHERE id= ?", tipo_novedad)];
-                    case 6:
-                        getestado = _a.sent();
-                        res[0][index]["analista"] =
-                            getanalista[0][0]["nombres"] + " " + getanalista[0][0]["apellidos"];
-                        res[0][index]["tipo_novedad"] = gettipo[0][0]["nombre"];
-                        res[0][index]["estado_novedad"] = getestado[0][0]["nombre"];
-                        _a.label = 7;
-                    case 7:
-                        index++;
-                        return [3 /*break*/, 3];
-                    case 8: return [2 /*return*/, res[0]];
+                        estados = _a.sent();
+                        res = [];
+                        for (index = 0; index < estados[0].length; index++) {
+                            estado = {
+                                label: estados[0][index]["nombre"],
+                                value: estados[0][index]["id"],
+                                tipo_novedada: estados[0][index]["tipo_novedada"]
+                            };
+                            res.push(estado);
+                        }
+                        return [2 /*return*/, res];
                 }
             });
         });
     };
-    NovedadesRepository.prototype.updateUserr = function (id, novedad) {
-        return __awaiter(this, void 0, void 0, function () {
-            var conn, res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, database_1.connect()];
-                    case 1:
-                        conn = _a.sent();
-                        return [4 /*yield*/, conn.query("UPDATE novedades SET ? WHERE id= ?", [novedad, id])];
-                    case 2:
-                        _a.sent();
-                        return [4 /*yield*/, conn.query("SELECT * FROM  novedades WHERE id = ?", id)];
-                    case 3:
-                        res = _a.sent();
-                        return [2 /*return*/, res[0][0]];
-                }
-            });
-        });
-    };
-    return NovedadesRepository;
+    return formulariosRepository;
 }());
-exports.NovedadesRepository = NovedadesRepository;
+exports.formulariosRepository = formulariosRepository;
